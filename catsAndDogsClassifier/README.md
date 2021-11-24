@@ -17,10 +17,3 @@ This code is designed to run Windows system. You would have to install tensorflo
 ```bash
   pip install tensorflow
 ```
-
-## Install
-
-Simply git clone the repo:
-```bash
-  pip install tensorflow
-```
