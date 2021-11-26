@@ -1,9 +1,9 @@
 # Projects    
 
 ## Project list    
-- :heart:[ProteinDB](#proteinDB)
+- :heart:[ProteinDB](#proteindb)
 - :cat: :dog:[Cats and dogs classifier](#cats-and-dogs-classifier)
-- :zap:[Pneumonia Classification on X-rays](#:zap:pneumonia-classification-on-x-rays)
+- :zap:[Pneumonia Classification on X-rays](#pneumonia-classification-on-x-rays)
 
 
 ## Authors
@@ -24,7 +24,7 @@ classify problem
 Image classification task to tell dogs from cats a part   
     
 
-### :zap:Pneumonia Classification on X-rays  
+### Pneumonia Classification on X-rays  
 classify problem  
     
 In light of the recent COVID-19 pandemic, take a look at one of the
