@@ -1,9 +1,9 @@
 # Projects    
 
 ## Project list    
-- [ProteinDB](#proteinDB)
-- [Cats and dogs classifier](#cats-and-dogs-classifier)
-- [Pneumonia Classification on X-rays](#pneumonia-classification-on-x-rays)
+- :heart:[ProteinDB](#proteinDB)
+- :cat: :dog:[Cats and dogs classifier](#cats-and-dogs-classifier)
+- :zap:[Pneumonia Classification on X-rays](#pneumonia-classification-on-x-rays)
 
 
 ## Authors
