@@ -1,7 +1,7 @@
 
 # Pneumonia Classification on X-rays
 
-The Dataset
+## The Dataset
 
 All images are x-ray images taken in the chest region to get a view of the lungs.
 There are 1341 images of healthy humans, as well as 1341 images of people with
