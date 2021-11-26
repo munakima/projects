@@ -3,7 +3,7 @@
 ## Project list    
 - :heart:[ProteinDB](#proteinDB)
 - :cat: :dog:[Cats and dogs classifier](#cats-and-dogs-classifier)
-- :zap:[Pneumonia Classification on X-rays](#pneumonia-classification-on-x-rays)
+- :zap:[Pneumonia Classification on X-rays](#:zap:pneumonia-classification-on-x-rays)
 
 
 ## Authors
@@ -13,7 +13,7 @@
 ## Project Description   
 [top](#projects)    
     
-### :heart:ProteinDB    
+### ProteinDB    
 
 System for Repurposing and Analyzing Biomolecular Atomic Data   
   
