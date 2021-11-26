@@ -1,10 +1,14 @@
 
 # Pneumonia Classification on X-rays
 
+The Dataset
 
-The dataset consists of x-ray images of patients who either has pneumonia or are health. There are 1341 images of pneumonia and 1341 images of health in separate folders.  
-In light of the recent COVID-19 pandemic, take a look at one of the severe symptoms of the disease, pneumonia. The task is to detect whether a patient has developed pneumonia or health. 
-I used Jupyter notebook to run the code.
+All images are x-ray images taken in the chest region to get a view of the lungs.
+There are 1341 images of healthy humans, as well as 1341 images of people with
+pneumonia.   
+The image format is jpeg, and there are 3 color channels.    
+The dataset was created by taking x-ray images of children aged 1-5 from
+the Guangzhou Women and Children’s Medical Center.       
 
 ## Authors
 
