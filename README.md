@@ -18,7 +18,7 @@
 System for Repurposing and Analyzing Biomolecular Atomic Data   
   
      
-### :cat:Cats and dogs classifier  
+### :cat: :dog:Cats and dogs classifier  
 classify problem   
     
 Image classification task to tell dogs from cats a part   
