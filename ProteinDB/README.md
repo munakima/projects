@@ -16,5 +16,5 @@ This code is designed to run Windows system. You would have to install tensorflo
 ```bash
   pip install tensorflow
 ```
-optparse     
-python2 and python3 use `argparse/`   
+**optparse** module makes easy to write command-line tools     
+python2 and python3 use `argparse`   
