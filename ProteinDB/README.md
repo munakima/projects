@@ -2,10 +2,10 @@
 The Protein Data Bank (PDB) is a repository of raw atomic coordinates of biomolecules. Any structural bioinformatics study requires post-processing of the raw data into derived information to be used in subsequent analysis. One of the most widely used derived pieces of information are non-covalent atomic contacts within and among biomolecules. Non-covalent atomic contacts define the structure and interactions of most biomolecules. Analysis of this information is crucial across many fields such as protein folding or protein-protein interaction prediction. Diverse structural bioinformatics studies tend to require similar collection and processing of intra- or inter-molecular atomic contacts from the raw structures in the PDB. In this project a system will be developed  that aims to provide information about contacts in a flexible and easy to use format.     
     
 We have identified several stages common to bioinformatics studies based on atomic contacts. These steps are     
-1) quality filtering of structures 
-2)accessible surface and surface area change identification 
-3)atomic contact identification 
-4)contact visualization. 
+1) quality filtering of structures    
+2) accessible surface and surface area change identification   
+3) atomic contact identification    
+4) contact visualization.    
 Automated protocols will be created that collect contact data according to standardized and widely used metrics. The system will have a provision to be updated on a monthly basis and be accompanied by suitable web-based analytics tools to facilitate biomolecular atomic data repurposing.        
     
 ## The dataset   
