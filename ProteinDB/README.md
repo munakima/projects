@@ -5,7 +5,8 @@ We have identified several stages common to bioinformatics studies based on atom
 1) quality filtering of structures    
 2) accessible surface and surface area change identification   
 3) atomic contact identification    
-4) contact visualization.        
+4) contact visualization.   
+             
 Automated protocols will be created that collect contact data according to standardized and widely used metrics. The system will have a provision to be updated on a monthly basis and be accompanied by suitable web-based analytics tools to facilitate biomolecular atomic data repurposing.        
     
 ## The dataset   
