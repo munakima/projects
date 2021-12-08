@@ -37,6 +37,17 @@ def calContactSeperateBuriedArea(path, selChains):
 	        buried_sasa -= float(chainSasa)
 	    sasa['bsa'] = '% .2f' % -(buried_sasa/2)  # formula  buried area= -((totalSasa-chain1 sasa - chain2 sasa)/2)
 	    return sasa
+def calAsaBsaByChainpairs():
+    buried_list=[]
+    csv_df = pd.read_csv(DB.ChainResPairs_csv)
+    chain_pair_df=['structure_id','chain_pair']
+    for index, row in csv_df.iterrows():
+    	path=DB.pdb_db+'/pdb'+row['structure_id']+DB.ENT_FORMAT
+    	values=row['chain_pair']
+    	pair=calContactSeperateBuriedArea(path, values)
+    	df=pd.DataFrame([pair])
+    	pdbStru.saveCsv(DB.sasa_db,DB.ChainPair_sasa_bsa_csv,df)
+    return buried_list
 
 def getResSasa(clean,k,v):
      struFree = freesasa.structureFromBioPDB(clean)
