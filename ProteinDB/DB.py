@@ -29,6 +29,8 @@ alphaFoldHuman_len_csv=join(structure_db,'AlphaFoldHuman_len_csv.csv')
 
 # sasa 
 sasa_db=join(db_dir,'sasa_db')
+# max contact chain pair sasa and buried area 
+ChainPair_sasa_bsa_csv=join(sasa_db,'ChainPair_sasa_bsa_csv.csv')
 # chain pair sasa
 ResPairs_sasa_csv=join(sasa_db,'ResPairs_sasa_csv.csv')
 # residues sasa
