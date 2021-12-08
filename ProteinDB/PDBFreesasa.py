@@ -37,16 +37,30 @@ def calContactSeperateBuriedArea(path, selChains):
 	        buried_sasa -= float(chainSasa)
 	    sasa['bsa'] = '% .2f' % -(buried_sasa/2)  # formula  buried area= -((totalSasa-chain1 sasa - chain2 sasa)/2)
 	    return sasa
-def calAsaBsaByChainpairs():
+	
+def calAsaBsaByChainpairs(mer=None):
     buried_list=[]
     csv_df = pd.read_csv(DB.ChainResPairs_csv)
     chain_pair_df=['structure_id','chain_pair']
-    for index, row in csv_df.iterrows():
-    	path=DB.pdb_db+'/pdb'+row['structure_id']+DB.ENT_FORMAT
-    	values=row['chain_pair']
-    	pair=calContactSeperateBuriedArea(path, values)
-    	df=pd.DataFrame([pair])
-    	pdbStru.saveCsv(DB.sasa_db,DB.ChainPair_sasa_bsa_csv,df)
+    if(mer==None):
+        for index, row in csv_df.iterrows():
+            path=DB.pdb_db+'/pdb'+row['structure_id']+DB.ENT_FORMAT
+            values=row['chain_pair']
+            pair=calContactSeperateBuriedArea(path, values)
+            df=pd.DataFrame([pair])
+            pdbStru.saveCsv(DB.sasa_db,DB.ChainPair_sasa_bsa_csv,df)#DB.ChainPair_sasa_bsa_csv
+            buried_list.append(pair)
+    elif(mer=='dimer'):
+        df=pd.read_csv(DB.dimer_csv)#dimer_csv
+        li=list(df['structure_id'])
+        for index, row in csv_df.iterrows():
+            if(row['structure_id'] in li):
+                path=DB.pdb_db+'/pdb'+row['structure_id']+DB.ENT_FORMAT
+                values=row['chain_pair']
+                pair=calContactSeperateBuriedArea(path, values)
+                df=pd.DataFrame([pair])
+                pdbStru.saveCsv(DB.sasa_db,DB.dimer_ChainPair_sasa_bsa_csv,df)#DB.ChainPair_sasa_bsa_csv
+                buried_list.append(pair)
     return buried_list
 
 def getResSasa(clean,k,v):
