@@ -5,7 +5,6 @@ import re
 import DB
 from os.path import join
 from Bio.PDB import PDBParser
-import Bio.PDB.Polypeptide as polypep
 import requests
 import pandas as pd
 from pathlib import Path
@@ -73,7 +72,7 @@ def downloadPDBWindows():
 #####################
 # store to csv file #
 #####################
-def saveCsv(file_dir, file_path, pd_file):
+def saveCsv(file_dir, file_path, pd_file, test=None):
     """
         saved as a csv.
         Create a folder, if the file_dir not exist.
@@ -83,14 +82,18 @@ def saveCsv(file_dir, file_path, pd_file):
         :param file_dir: directory of csv file
         :param file_path: path of csv file
         :param pd_file: target file
+        :param test: if pass nothing to test, data will save into csv, otherwise is for test
     """
-    if not os.path.exists(file_dir):
-        os.mkdir(file_dir)
-    file = Path(file_path)
-    if file.is_file():
-        pd_file.to_csv(file_path, mode='a', index=False, header=False)
+    if test == 'test':
+        print('test, will not save into csv.')
     else:
-        pd_file.to_csv(file_path, mode='a', index=False, header=True)
+        if not os.path.exists(file_dir):
+            os.mkdir(file_dir)
+        file = Path(file_path)
+        if file.is_file():
+            pd_file.to_csv(file_path, mode='a', index=False, header=False)
+        else:
+            pd_file.to_csv(file_path, mode='a', index=False, header=True)
 
 
 #################
