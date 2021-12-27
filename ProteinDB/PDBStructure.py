@@ -56,8 +56,8 @@ residue_atoms = {
 # Windows download PDB structure
 def downloadPDBWindows():
     pdbl = PDBList()
-    PDBlist = pdbl.get_all_entries()
-    for i in PDBlist:
+    PDB_list = pdbl.get_all_entries()
+    for i in PDB_list:
         filename = '%s.pdb' % i[:4]
         # url='https://files.rcsb.org/download/%s' % filename
         url = ALL_PDB_URL + '%s' % filename
@@ -101,9 +101,9 @@ def saveCsv(file_dir, file_path, pd_file, test=None):
 #################
 def getAllStruc(file_format):
     """
-       Get all PDB structure by .ent or .pdb format in DB.pdb_db folder.
+        Get all PDB structure by .ent or .pdb format in DB.pdb_db folder.
 
-       :param file_format: .ent:DB.ENT_FORMAT or .pdb:DB.PDB_FORMAT
+        :param file_format: .ent:DB.ENT_FORMAT or .pdb:DB.PDB_FORMAT
         :return: a list of all structures
     """
     all_files = os.listdir(DB.pdb_db)
@@ -128,16 +128,46 @@ def getOneStrucByPath(pdb_path):
     if pdb_format == DB.PDB_FORMAT:
         if 'model' in pdb_path:
             structure_id = pdb_path.split('-')[1]
-            structure = p.get_structure(structure_id, pdb_path)
-            return structure
         else:
             structure_id = pdb_path.split('/')[-1].strip('.pdb')
-            structure = p.get_structure(structure_id, pdb_path)
-            return structure
     else:
         structure_id = pdb_path.split('/')[-1].strip('.ent').strip('pdb')
-        structure = p.get_structure(structure_id, pdb_path)
-        return structure
+    structure = p.get_structure(structure_id, pdb_path)
+    return structure
+
+
+def getStrucIdByPDBPdb(pdb_path):
+    return pdb_path.split('/')[-1].strip('.pdb')
+
+
+def getStrucIdByAlphaPdb(pdb_path):
+    return pdb_path.split('-')[1]
+
+
+def getStrucIdByPDBEnt(pdb_path):
+    return pdb_path.split('/')[-1].strip('.ent').strip('pdb')
+
+
+# Lookup dictionary for different PDB format and database
+PDB_code_dict = {DB.PDB_FORMAT: getStrucIdByPDBPdb, DB.PDB_FORMAT + 'A': getStrucIdByAlphaPdb,
+                 DB.ENT_FORMAT: getStrucIdByPDBEnt}
+
+
+def getOneStrucByPath(pdb_path):
+    """
+        Get one structure by pass a path of structure.
+
+        :param pdb_path: path of structure
+        :return: a structure
+    """
+    warnings.simplefilter('ignore', PDBConstructionWarning)
+    p = PDBParser(PERMISSIVE=True, QUIET=True)
+    pdb_format = '.' + pdb_path.split('.')[1][-4:]
+    if 'model' in pdb_path:
+        pdb_format = DB.PDB_FORMAT + 'A'
+    structure_id = PDB_code_dict[pdb_format](pdb_path)
+    structure = p.get_structure(structure_id, pdb_path)
+    return structure
 
 
 # get protein structure
@@ -172,7 +202,7 @@ def cleanStructure(struc):
                         atom_to_remove.append(atom)
     # remove hydrogens atoms
     for atom in atom_to_remove:
-        if (str(atom.get_parent()) != 'None'):
+        if str(atom.get_parent()) != 'None':
             atom.get_parent().detach_child(atom.get_id())
     # mark residue that atoms are empty
     for res in model.get_residues():
@@ -181,7 +211,7 @@ def cleanStructure(struc):
             res_to_remove.append(res)
     # remove residues
     for res in res_to_remove:
-        if (str(res.get_parent()) != 'None'):
+        if str(res.get_parent()) != 'None':
             res.get_parent().detach_child(res.id)
 
     for chains in model.get_chains():
@@ -206,7 +236,7 @@ def global_stoichiometry(pbd_id):
     if 'rcsb_struct_symmetry' in rcsb_stoichiometry_api_json_response:
         repository = rcsb_stoichiometry_api_json_response['rcsb_struct_symmetry']
         for i in repository:
-            if (i['kind'] == 'Global Symmetry'):
+            if i['kind'] == 'Global Symmetry':
                 return i['oligomeric_state']
 
 
@@ -302,18 +332,18 @@ def is_aa_22(residue):
     return residue in d3_to_index
 
 
-def getStructureSequenceByChain(struc, whichchain):
+def getStructureSequenceByChain(struc, which_chain):
     """
         Return a single-chain list for all PDB structures.
 
         :param struc: a structure
-        :param whichchain: a specific chain
+        :param which_chain: a specific chain
         :return: a full sequence
     """
     model = struc[0]
     seq = []
     name = struc.id
-    for residue in model[whichchain]:
+    for residue in model[which_chain]:
         if residue.get_resname() in standard_aa_names:
             seq.append(three_to_one(residue.get_resname()))
     full_seq = ''.join(seq)
@@ -414,8 +444,10 @@ if __name__ == '__main__':
 
     parser = OptionParser()
 
-    parser.add_option("--structure", dest="structure", action="store_true",
-                      help="get structure", metavar="Structure")
+    parser.add_option("--structurePDB", dest="structurePDB", action="store_true",
+                      help="get structurePDB", metavar="Structure")
+    parser.add_option("--structureAlpha", dest="structureAlpha", action="store_true",
+                      help="get structureAlpha", metavar="Structure")
     parser.add_option("--dimer", dest="dimer", action="store_true",
                       help="get dimer", metavar="Structure")
     parser.add_option("--singlechain", dest="singlechain", action="store_true",
@@ -429,8 +461,8 @@ if __name__ == '__main__':
     (options, args) = parser.parse_args()
 
     # test getOneStrucByPath PDB
-    if options.structure:
-        # python PDBStructure.py --structure --pdb_code 1ahw
+    if options.structurePDB:
+        # python PDBStructure.py --structurePDB --pdb_code 1ahw
         pdb_code = '1ahw'
         chain = 'A'
         path = test_directory + '/pdb' + pdb_code + DB.ENT_FORMAT
@@ -439,8 +471,8 @@ if __name__ == '__main__':
             print('Fail')
 
     # test getOneStrucByPath AlphaFold
-    if options.structure:
-        # python PDBStructure.py --structure --pdb_code A0A0A0MS05
+    if options.structureAlpha:
+        # python PDBStructure.py --structureAlpha --pdb_code A0A0A0MS05
         pdb_code = 'A0A0A0MS05'
         chain = 'A'
         path = test_directory + '/' + 'AF-A0A0A0MS05-F1-model_v1' + DB.PDB_FORMAT
