@@ -69,12 +69,13 @@ class PDBContactMap():
         chain_res_pair['res_pair'] = res_list
         return chain_res_pair
 
-    def getMaxContactChainPairs(self, test=None):
+    def getMaxContactChainPairs(self, file_path, test):
         """
             Get a maximum contact chain pair in formation in a structure
             which including structure_id, maximum contact chain pair, contact number of residues, residue pairs
             and save as csv.
 
+            :param file_path:
             :param test: if pass nothing to test, data will save into csv, otherwise is for test
             :return: a dictionary of structure_id, chain list,max contact chain pairs,residue pairs, format as:
             {'structure_id':'169l','chains':'ABCDE','chain_pair':'C_D',res_pair:['C_ILE_3~D_SER_38', 'C_ILE_3~D_PRO_37'
@@ -95,7 +96,7 @@ class PDBContactMap():
         max_contact_dict = {'structure_id': max_contact_pair['structure_id'], 'chains': chain_list,
                             'chain_pair': max_contact_pair['chain_pair'], 'res_pair': max_contact_pair['res_pair']}
         df = pd.DataFrame([max_contact_dict], columns=['structure_id', 'chains', 'chain_pair', 'res_pair'])
-        pdbStru.saveCsv(DB.structure_db, DB.ChainResPairs_csv, df, test)
+        pdbStru.saveCsv(DB.structure_db, file_path, df, test)
         return max_contact_dict
 
 
@@ -106,16 +107,14 @@ class PDBContactMap():
 # and list all residues of those chains which are within a certain threshold distance
 # which we set as 5Å. If passing 'test' to function that will not save into csv.
 # ['structure_id', 'chains', 'chain_pair', 'res_pair']
-def generateAllPDBContact(test=None):
-    pdb_list = pdbStru.loadingPDB()
+def listAllPDBContact(pdb_list, file_path, test):
     for pdb in pdb_list:
         structure = pdbStru.getOneStrucByPath(pdb)
         struc = pdbStru.cleanStructure(structure)
         if len(pdbStru.PDBstructure(struc).allChains()) > 1:
-            contact_dict = PDBContactMap(struc).getMaxContactChainPairs(test)
+            PDBContactMap(struc).getMaxContactChainPairs(file_path, test)
         else:
             continue
-        print(contact_dict)
 
 
 if __name__ == '__main__':
@@ -157,7 +156,7 @@ if __name__ == '__main__':
         path = test_directory + '/pdb' + pdb_code + DB.ENT_FORMAT
         structure = pdbStru.getOneStrucByPath(path)
         struc = pdbStru.cleanStructure(structure)
-        max_contact_dict = PDBContactMap(struc).getMaxContactChainPairs('test')
+        max_contact_dict = PDBContactMap(struc).getMaxContactChainPairs('test.csv', 'test')
         target_keys = list(max_contact_dict.keys())
         if struc.id != pdb_code or max_contact_dict['chains'] != 'ABCDEF' or max_contact_dict['chain_pair'] != 'D_E':
             print('Fail')

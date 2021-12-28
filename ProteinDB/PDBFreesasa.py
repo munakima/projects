@@ -33,7 +33,7 @@ def merging(file1, file2, merge_file):
     df.to_csv(merge_file, index=False, header=True)
 
 
-def getASABystructure(struc, file, test=None):
+def getASABystructure(struc, file, test):
     """
         Get structure_id,chain_id, sasa by a Biopython structure.
         And save as csv file.
@@ -114,7 +114,7 @@ def calContactSeperateBuriedArea(path, sel_chains):
 # by the getMaxContactChainPairs function first.
 # For dimer, this function need to generate the dimer.csv by
 # the generateDimer function first, and the function mentioned before.
-def generateChainPairSasaBsaByChainPairCsv(mer=None, test=None):
+def generateChainPairSasaBsaByChainPairCsv(mer, test):
     """
         Get SASA and BSA by chain pairs in exist dataset,
         which is the maximum contact in a structure,
@@ -129,30 +129,30 @@ def generateChainPairSasaBsaByChainPairCsv(mer=None, test=None):
         }
     """
     buried_list = []
-    try:
-        csv_df = pd.read_csv(DB.ChainResPairs_csv)
-        print(csv_df)
-        if mer is None:
-            for index, row in csv_df.iterrows():
+    #try:
+    csv_df = pd.read_csv(DB.ChainResPairs_csv)
+    print(csv_df)
+    if mer is None:
+        for index, row in csv_df.iterrows():
+            path = DB.pdb_db + '/pdb' + row['structure_id'] + DB.ENT_FORMAT
+            values = row['chain_pair']
+            pair = calContactSeperateBuriedArea(path, values)
+            df = pd.DataFrame([pair])
+            pdbStru.saveCsv(DB.sasa_db, DB.ChainPair_sasa_bsa_csv, df, test)
+            buried_list.append(pair)
+    elif mer == 'dimer':
+        df = pd.read_csv(DB.dimer_csv)
+        li = list(df['structure_id'])
+        for index, row in csv_df.iterrows():
+            if row['structure_id'] in li:
                 path = DB.pdb_db + '/pdb' + row['structure_id'] + DB.ENT_FORMAT
                 values = row['chain_pair']
                 pair = calContactSeperateBuriedArea(path, values)
                 df = pd.DataFrame([pair])
-                pdbStru.saveCsv(DB.sasa_db, DB.ChainPair_sasa_bsa_csv, df, test)
+                pdbStru.saveCsv(DB.sasa_db, DB.dimer_ChainPair_sasa_bsa_csv, df, test)
                 buried_list.append(pair)
-        elif mer == 'dimer':
-            df = pd.read_csv(DB.dimer_csv)
-            li = list(df['structure_id'])
-            for index, row in csv_df.iterrows():
-                if row['structure_id'] in li:
-                    path = DB.pdb_db + '/pdb' + row['structure_id'] + DB.ENT_FORMAT
-                    values = row['chain_pair']
-                    pair = calContactSeperateBuriedArea(path, values)
-                    df = pd.DataFrame([pair])
-                    pdbStru.saveCsv(DB.sasa_db, DB.dimer_ChainPair_sasa_bsa_csv, df, test)
-                    buried_list.append(pair)
-    except OSError as e:
-        print(e)
+    # except OSError as e:
+    #     print(e)
     return buried_list
 
 
@@ -193,7 +193,7 @@ def remainTargetRes(struc, target_chain):
 
 # Note this function need to generate the ChainResPairs_csv.csv by
 # the getMaxContactChainPairs function first.
-def getResAsaByChainResPairsCsv(test=None):
+def getResAsaByChainResPairsCsv(test):
     """
         Read exist chain residues pairs use it to calculate the combine residues,
         SASA and without combine residues' SASA. Store dict result and save as csv.
@@ -243,55 +243,17 @@ def getResAsaByChainResPairsCsv(test=None):
 #######################
 # Generate CSV dataset#
 #######################
-# Combined chain pair, residue pair information with sasa of residues together which will like:
-# ['structure_id', 'chains', 'chain_pair', 'res_pair']+['structure_id', 'res_sasa']=
-# ['structure_id', 'chains', 'chain_pair', 'res_pair', 'res_sasa']
-def generateChainResPairSasaBsaCsv():
-    merging(DB.ChainResPairs_csv, DB.ResPairs_sasa_csv, join(DB.sasa_db, 'chainResPair_sasa_bsa_csv.csv'))
 
-
-# Generate sasa, bsa of all PDB chain pair
-# ['Structure_id','chain_pair','total_sasa','pair_length','bsa']
-def generateAllChainPairSasaBsa():
-    generateChainPairSasaBsaByChainPairCsv()
-
-
-# Generate sasa, bsa of dimer chain pair
-# ['Structure_id','chain_pair','total_sasa','pair_length','bsa']
-def generateDimerChainPairSasaBsa():
-    generateChainPairSasaBsaByChainPairCsv(mer='dimer')
-
-
-# Generate sasa of residue pair for all PDB
-# ['structure_id', 'res_sasa']
-def generateAllResPairSasaBsa():
-    getResAsaByChainResPairsCsv()
-
-# Single chain#
 # For generate sasa of PDB single chain and AlphaFold function
 # ['structure_id', 'chain_id', 'sasa']
-def loadListForSasaSingleChain(pdb_list, path):
+def loadListForSasaSingleChain(pdb_list, path, test):
     for pdb in pdb_list:
         structure = pdbStru.getOneStrucByPath(pdb)
         struc = pdbStru.cleanStructure(structure)
         if len(pdbStru.PDBstructure(struc).allChains()) == 1:
-            getASABystructure(struc, path)
+            getASABystructure(struc, path, test)
         else:
             continue
-
-
-# Generate sasa of PDB single chain
-# ['structure_id', 'chain_id', 'sasa']
-def generateSasaPDBSingleChain():
-    pdb_list = pdbStru.loadingPDB()
-    loadListForSasaSingleChain(pdb_list, DB.PDBsingleChain_sasa_csv)
-
-
-# Generate sasa of AlphaFold single chain
-# ['structure_id', 'chain_id', 'sasa']
-def generateSasaAlphaSingleChain():
-    pdb_list = pdbStru.loadingAlpha()
-    loadListForSasaSingleChain(pdb_list, DB.alphaFoldHuman_sasa_csv)
 
 
 if __name__ == '__main__':

@@ -408,10 +408,6 @@ def getAlphaName(path):
 #######################
 # Generate CSV dataset#
 #######################
-# Generate all dimer into CSV file.
-# ['structure_id']
-def generateDimer():
-    getAllDimerPDB(loadingPDB())
 
 
 def generateLenByStructure(struc, file_path, test):
@@ -447,18 +443,6 @@ def getListLenByStructure(pdb_list, file_path, test):
             generateLenByStructure(struc, file_path, test)
         else:
             continue
-
-
-# Generate a length of single chain PDB csv
-def generateLenSingleChainPDB(test=None):
-    pdb_list = loadingPDB()
-    getListLenByStructure(pdb_list, DB.PDBsingleChain_len_csv, test)
-
-
-# Generate a length of single chain AlphaFold csv
-def generateLenSingleChainAlphaFold(test=None):
-    pdb_list = loadingAlpha()
-    getListLenByStructure(pdb_list, DB.alphaFoldHuman_len_csv, test)
 
 
 # The main function will parse options via the parser variable.
