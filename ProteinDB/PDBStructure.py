@@ -49,7 +49,6 @@ residue_atoms = {
 #########################
 # download all pdb file #
 #########################
-
 # Ubuntu download PDB structure as ent format command
 # wget ftp://ftp.wwpdb.org/pub/pdb/data/structures/all/pdb/*
 
@@ -67,6 +66,35 @@ def downloadPDBWindows():
         except OSError as e:
             pass
         urlretrieve(url, dest_file)
+
+
+# Download AlphaFold human database
+# https://ftp.ebi.ac.uk/pub/databases/alphafold/latest/UP000005640_9606_HUMAN_v2.tar
+
+
+########################
+# Loading data dataset #
+########################
+# Get a list of all PDB local path
+def loadingPDB():
+    all_files = os.listdir(DB.pdb_db)
+    lists = []
+    for i in all_files:
+        full_filename = join(DB.pdb_db, i)
+        lists.append(full_filename)
+    return lists
+
+
+# Get a list of all alphaFold human local path which only keep one model
+def loadingAlpha():
+    all_names = os.listdir(DB.alpha_db)
+    alphaFold_DB_names = [(i.split('.'))[0] for i in all_names]
+    name_list = []
+    for i in alphaFold_DB_names:
+        if i.split('-')[2] == 'F1':
+            full_filename = join(DB.alpha_db, i)
+            name_list.append(full_filename + DB.PDB_FORMAT)
+    return name_list
 
 
 #####################
@@ -99,53 +127,22 @@ def saveCsv(file_dir, file_path, pd_file, test=None):
 #################
 # PDB structure #
 #################
-def getAllStruc(file_format):
-    """
-        Get all PDB structure by .ent or .pdb format in DB.pdb_db folder.
-
-        :param file_format: .ent:DB.ENT_FORMAT or .pdb:DB.PDB_FORMAT
-        :return: a list of all structures
-    """
-    all_files = os.listdir(DB.pdb_db)
-    lists = []
-    epdb_files = list(filter(lambda x: x[-4:] == file_format, all_files))
-    for i in epdb_files:
-        full_filename = join(DB.pdb_db, i)
-        lists.append(full_filename)
-    return lists
-
-
-def getOneStrucByPath(pdb_path):
-    """
-        Get one structure by pass a path of structure.
-
-        :param pdb_path: path of structure
-        :return: a structure
-    """
-    warnings.simplefilter('ignore', PDBConstructionWarning)
-    p = PDBParser(PERMISSIVE=True, QUIET=True)
-    pdb_format = '.' + pdb_path.split('.')[1][-4:]
-    if pdb_format == DB.PDB_FORMAT:
-        if 'model' in pdb_path:
-            structure_id = pdb_path.split('-')[1]
-        else:
-            structure_id = pdb_path.split('/')[-1].strip('.pdb')
-    else:
-        structure_id = pdb_path.split('/')[-1].strip('.ent').strip('pdb')
-    structure = p.get_structure(structure_id, pdb_path)
-    return structure
-
-
+# Get structure id of pdb format for PDB
 def getStrucIdByPDBPdb(pdb_path):
-    return pdb_path.split('/')[-1].strip('.pdb')
+    pdb_path = pdb_path.replace("\\", "/")
+    return pdb_path.split('/')[-1].strip('.pdb').lower()
 
 
+# Get structure id of pdb format for AlphaFold
 def getStrucIdByAlphaPdb(pdb_path):
+    pdb_path = pdb_path.replace("\\", "/")
     return pdb_path.split('-')[1]
 
 
+# Get structure id of ent format for PDB
 def getStrucIdByPDBEnt(pdb_path):
-    return pdb_path.split('/')[-1].strip('.ent').strip('pdb')
+    pdb_path = pdb_path.replace("\\", "/")
+    return pdb_path.split('/')[-1].strip('pdb').strip('.ent').lower()
 
 
 # Lookup dictionary for different PDB format and database
@@ -170,7 +167,7 @@ def getOneStrucByPath(pdb_path):
     return structure
 
 
-# get protein structure
+# get protein structure by structure
 def cleanStructure(struc):
     """
         Get protein structure by pass a structure.
@@ -224,6 +221,11 @@ def cleanStructure(struc):
     return struc
 
 
+# get protein structure by path
+def loadingCleanStruc(path):
+    return cleanStructure(getOneStrucByPath(path))
+
+
 def global_stoichiometry(pbd_id):
     """
         Return a oligomeric state from API.
@@ -254,7 +256,7 @@ def getAllDimerPDB(pdb_list):
         if stoichiometry == 'Hetero 2-mer':
             dimer_list.append(pbd_id)
             dimer_df = pd.DataFrame({'structure_id': [pbd_id]}, columns=['structure_id'])
-            saveCsv(DB.category_db, DB.dimer_csv, dimer_df)
+            saveCsv(DB.structure_db, DB.dimer_csv, dimer_df)
     return dimer_list
 
 
@@ -391,37 +393,6 @@ class PDBchain:
         return len(residues)
 
 
-def generateLenBystructure(struc, dir_path, file):
-    """
-        Get length by one structure, and save as csv.
-        Format as:
-        {'structure_id':169l, chain_id:'ABCDE', length:324}
-
-        :param struc: a structure
-        :param dir_path: target directory
-        :param file: target file
-    """
-    res_num = [r for r in struc[0].get_residues()]
-    chains = PDBstructure(struc).chainLine()
-    df = pd.DataFrame({'structure_id': [struc.id], 'chain_id': [chains], 'length': [len(res_num)]},
-                      columns=['structure_id', 'chain_id', 'length'])
-    saveCsv(dir_path, file, df)
-
-
-#######################
-# AlphaFold structure #
-#######################
-def getAllAlphaFoldHumanId():
-    all_names = os.listdir(DB.alpha_db)
-    alphaFold_DB_names = [(i.split('.'))[0] for i in all_names]
-    name_list = []
-    for i in alphaFold_DB_names:
-        if i.split('-')[2] == 'F1':
-            full_filename = join(DB.alpha_db, i)
-            name_list.append(full_filename + DB.PDB_FORMAT)
-    return name_list
-
-
 def getAlphaName(path):
     """
         Return alphaFold structure name by path of it
@@ -432,6 +403,62 @@ def getAlphaName(path):
     path = path.split('/')[-1]
     alphaFold_DB_names = path.split('-')[1]
     return alphaFold_DB_names
+
+
+#######################
+# Generate CSV dataset#
+#######################
+# Generate all dimer into CSV file.
+# ['structure_id']
+def generateDimer():
+    getAllDimerPDB(loadingPDB())
+
+
+def generateLenByStructure(struc, file_path, test):
+    """
+        Get length by one structure, and save as csv.
+
+        :param struc: a structure
+        :param file_path: target file
+        :param test: for test or not
+        :param return: a dictionary of length for PDB or AlphaFold, Format as:
+        {'structure_id':169l, chain_id:'ABCDE', length:324}
+    """
+    res_num = [r for r in struc[0].get_residues()]
+    chains = PDBstructure(struc).chainLine()
+    len_dict = {'structure_id': struc.id, 'chain_id': chains, 'length': len(res_num)}
+    df = pd.DataFrame([len_dict], columns=['structure_id', 'chain_id', 'length'])
+    saveCsv(DB.structure_db, file_path, df, test)
+    return len_dict
+
+
+def getListLenByStructure(pdb_list, file_path, test):
+    """
+        Generate a csv to store length of structures by a dataset.
+
+        :param pdb_list: a PDB or AlphaFold dataset
+        :param file_path: target directory
+        :param test: for test or not
+    """
+    for pdb in pdb_list:
+        structure = getOneStrucByPath(pdb)
+        struc = cleanStructure(structure)
+        if len(PDBstructure(struc).allChains()) == 1:
+            generateLenByStructure(struc, file_path, test)
+        else:
+            continue
+
+
+# Generate a length of single chain PDB csv
+def generateLenSingleChainPDB(test=None):
+    pdb_list = loadingPDB()
+    getListLenByStructure(pdb_list, DB.PDBsingleChain_len_csv, test)
+
+
+# Generate a length of single chain AlphaFold csv
+def generateLenSingleChainAlphaFold(test=None):
+    pdb_list = loadingAlpha()
+    getListLenByStructure(pdb_list, DB.alphaFoldHuman_len_csv, test)
 
 
 # The main function will parse options via the parser variable.
@@ -456,6 +483,10 @@ if __name__ == '__main__':
                       help="get seq", metavar="Structure")
     parser.add_option("--alphaname", dest="alphaname", action="store_true",
                       help="get alpha name", metavar="Structure")
+    parser.add_option("--loadingAlpha", dest="loadingAlpha", action="store_true",
+                      help="get loadingAlpha", metavar="Structure")
+    parser.add_option("--loadingPDB", dest="loadingPDB", action="store_true",
+                      help="get loading PDB", metavar="Structure")
     parser.add_option("--pdb_code", dest="pdb_code",
                       help="Holds the pdb code", metavar="PDBCODE")
     (options, args) = parser.parse_args()
@@ -511,6 +542,20 @@ if __name__ == '__main__':
         struc = cleanStructure(structure)
         name, seqs = getStructureSequenceByChain(struc, chain)
         if seqs != 'TDSPVECMG':
+            print('Fail')
+
+    # test loadingAlpha
+    if options.loadingAlpha:
+        # python PDBStructure.py --loadingAlpha
+        target_list = loadingAlpha()
+        if len(target_list) != 3:
+            print('Fail')
+
+    # test loadingPDB
+    if options.loadingPDB:
+        # python PDBStructure.py --loadingPDB
+        target_list = loadingPDB()
+        if len(target_list) != 4:
             print('Fail')
 
     # test getAlphaName

@@ -4,7 +4,6 @@ import DB
 import pandas as pd
 
 
-
 def getNumberHelixLoopsSheet(structure):
     model = structure[0]
     dssp = DSSP(model, path, dssp=DB.dssp_path)
@@ -12,10 +11,10 @@ def getNumberHelixLoopsSheet(structure):
     line = ''
     for i in dssp.keys():
         # print(dssp[i])
-        if (dssp[i][3] != 'NA'):
-            if (dssp[i][2] == 'H'):
+        if dssp[i][3] != 'NA':
+            if dssp[i][2] == 'H':
                 line += 'H'
-            elif (dssp[i][2] == 'E'):
+            elif dssp[i][2] == 'E':
                 line += 'E'
             else:
                 line += 'C'
@@ -55,15 +54,16 @@ def getNumberHelixLoopsSheet(structure):
     #     key=k[0]
     #     dict_HelixLoopsSheet[key]=k[1]
     print(dict_HelixLoopsSheet)
-    df=pd.DataFrame({'structure_id':[structure.id],'loops':[count_C],'alpha_helix':[count_H],'beta_sheet':[count_E]},columns=['structure_id','loops','alpha_helix','beta_sheet'])
-    pdbStru.saveCsv(DB.dssp_db,DB.Alpha_NumberHelixLoopsSheet_csv,df)
-
+    df = pd.DataFrame(
+        {'structure_id': [structure.id], 'loops': [count_C], 'alpha_helix': [count_H], 'beta_sheet': [count_E]},
+        columns=['structure_id', 'loops', 'alpha_helix', 'beta_sheet'])
+    pdbStru.saveCsv(DB.dssp_db, DB.Alpha_NumberHelixLoopsSheet_csv, df)
 
 
 if __name__ == '__main__':
-	alpha_list=pdbStru.getAllAlphaFoldHumanId()
-	for path in alpha_list:
-		structure=pdbStru.getOneStrucByPath(path)
-		print(structure.id)
-		struc=pdbStru.cleanStructure(structure)
-		getNumberHelixLoopsSheet(struc)
+    alpha_list = pdbStru.getAllAlphaFoldHumanId()
+    for path in alpha_list:
+        structure = pdbStru.getOneStrucByPath(path)
+        print(structure.id)
+        struc = pdbStru.cleanStructure(structure)
+        getNumberHelixLoopsSheet(struc)

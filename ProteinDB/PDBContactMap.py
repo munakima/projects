@@ -21,7 +21,7 @@ class PDBContactMap():
             'C_ILE_3~D_PRO_37',...]}
         """
         cutoff = 5  # set residue distance less than 5A
-        model = struc[0]
+        model = self.struc[0]
         chain_res_pair = {}
         chain2_atom_list = [at for at in model[chain2].get_atoms() if at.parent.id[0] == ' ']  # all atom of chain2
         check_identifer = []
@@ -63,7 +63,7 @@ class PDBContactMap():
                             continue
                     else:
                         continue
-        chain_res_pair['structure_id'] = struc.id  # structure_id,i.e., 167l
+        chain_res_pair['structure_id'] = self.struc.id  # structure_id,i.e., 167l
         chain_res_pair['num_res'] = len(res_list)  # contact number of residues
         chain_res_pair['chain_pair'] = chain1 + '_' + chain2  # contact chain pairs,i.e., 'A_B'
         chain_res_pair['res_pair'] = res_list
@@ -79,12 +79,11 @@ class PDBContactMap():
             :return: a dictionary of structure_id, chain list,max contact chain pairs,residue pairs, format as:
             {'structure_id':'169l','chains':'ABCDE','chain_pair':'C_D',res_pair:['C_ILE_3~D_SER_38', 'C_ILE_3~D_PRO_37'
             ,...]}
-
         """
         chain_pair_list = []
-        max_contact_pair = []
+        max_contact_pair = {}
         max_contact = 0
-        chain_list = pdbStru.PDBstructure(struc).chainLine()
+        chain_list = pdbStru.PDBstructure(self.struc).chainLine()
         for i in itertools.combinations(chain_list,
                                         2):  # all possible combine chains, i.e.,['AB', 'AC', 'AD', 'BC', 'BD', 'CD']
             chain_pair_list.append(''.join(i), )
@@ -98,6 +97,25 @@ class PDBContactMap():
         df = pd.DataFrame([max_contact_dict], columns=['structure_id', 'chains', 'chain_pair', 'res_pair'])
         pdbStru.saveCsv(DB.structure_db, DB.ChainResPairs_csv, df, test)
         return max_contact_dict
+
+
+#######################
+# Generate CSV dataset#
+#######################
+# Get which chains are close to each other in one PDB structure
+# and list all residues of those chains which are within a certain threshold distance
+# which we set as 5Å. If passing 'test' to function that will not save into csv.
+# ['structure_id', 'chains', 'chain_pair', 'res_pair']
+def generateAllPDBContact(test=None):
+    pdb_list = pdbStru.loadingPDB()
+    for pdb in pdb_list:
+        structure = pdbStru.getOneStrucByPath(pdb)
+        struc = pdbStru.cleanStructure(structure)
+        if len(pdbStru.PDBstructure(struc).allChains()) > 1:
+            contact_dict = PDBContactMap(struc).getMaxContactChainPairs(test)
+        else:
+            continue
+        print(contact_dict)
 
 
 if __name__ == '__main__':

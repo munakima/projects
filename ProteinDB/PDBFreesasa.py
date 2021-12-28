@@ -5,6 +5,59 @@ import pandas as pd
 from os.path import join
 
 
+# class sasa:
+#     def __init__(self, ):
+
+def getASAByStruc(struc):
+    """
+        Get sasa by a Biopython structure.
+
+        :param struc: a Biopython structure.
+    """
+    freesasa_structure = freesasa.structureFromBioPDB(struc[0])
+    result = freesasa.calc(freesasa_structure)
+    return '%0.2f' % result.totalArea()
+
+
+def merging(file1, file2, merge_file):
+    """
+        Merge two csv file.
+
+        :param file1: csv1 file
+        :param file2: csv2 file
+        :param merge_file: path of merge file
+    """
+    csv1 = pd.read_csv(file1)
+    csv2 = pd.read_csv(file2)
+    df = pd.merge(csv1, csv2)
+    df.to_csv(merge_file, index=False, header=True)
+
+
+def getASABystructure(struc, file, test=None):
+    """
+        Get structure_id,chain_id, sasa by a Biopython structure.
+        And save as csv file.
+
+        :param struc: a Biopython structure
+        :param file: a target file
+        :param test: if pass nothing to test, data will save into csv, otherwise is for test
+        :return: a sasa dictionary, format as:
+        {'structure_id':'101m', 'chain_id': 'A','sasa': 8180.48}
+    """
+    sasa = getASAByStruc(struc)
+    chains = pdbStru.PDBstructure(struc).chainLine()
+    sasa_dict = {}
+    sasa_dict['structure_id'] = struc.id
+    sasa_dict['chain_id'] = chains
+    sasa_dict['sasa'] = sasa
+    df = pd.DataFrame([sasa_dict], columns=['structure_id', 'chain_id', 'sasa'])
+    pdbStru.saveCsv(DB.sasa_db, file, df, test)
+    return sasa_dict
+
+
+##############
+# chain pair #
+##############
 def getGivenChainSasa(struc, target_chains):
     """
         Get SASA by a structure and target chains.
@@ -17,9 +70,8 @@ def getGivenChainSasa(struc, target_chains):
     delChains = [c for c in all_chains if c not in target_chains]  # mark chains except targetChains
     [struc[0].detach_child(c) for c in delChains]  # delete chains except targetChains
     freesasa.setVerbosity(1)  # nowarnings FreeSASA: warning
-    structure = freesasa.structureFromBioPDB(struc[0])
-    result = freesasa.calc(structure)
-    return '%0.2f' % result.totalArea()
+    result = getASAByStruc(struc)
+    return result
 
 
 def calContactSeperateBuriedArea(path, sel_chains):
@@ -58,7 +110,11 @@ def calContactSeperateBuriedArea(path, sel_chains):
     return sasa
 
 
-def calAsaBsaByChainpairs(mer=None, test=None):
+# Note for PDB, this function need to generate the ChainResPairs_csv.csv
+# by the getMaxContactChainPairs function first.
+# For dimer, this function need to generate the dimer.csv by
+# the generateDimer function first, and the function mentioned before.
+def generateChainPairSasaBsaByChainPairCsv(mer=None, test=None):
     """
         Get SASA and BSA by chain pairs in exist dataset,
         which is the maximum contact in a structure,
@@ -73,29 +129,36 @@ def calAsaBsaByChainpairs(mer=None, test=None):
         }
     """
     buried_list = []
-    csv_df = pd.read_csv(DB.ChainResPairs_csv)
-    if mer is None:
-        for index, row in csv_df.iterrows():
-            path = DB.pdb_db + '/pdb' + row['structure_id'] + DB.ENT_FORMAT
-            values = row['chain_pair']
-            pair = calContactSeperateBuriedArea(path, values)
-            df = pd.DataFrame([pair])
-            pdbStru.saveCsv(DB.sasa_db, DB.ChainPair_sasa_bsa_csv, df, test)
-            buried_list.append(pair)
-    elif mer == 'dimer':
-        df = pd.read_csv(DB.dimer_csv)
-        li = list(df['structure_id'])
-        for index, row in csv_df.iterrows():
-            if row['structure_id'] in li:
+    try:
+        csv_df = pd.read_csv(DB.ChainResPairs_csv)
+        print(csv_df)
+        if mer is None:
+            for index, row in csv_df.iterrows():
                 path = DB.pdb_db + '/pdb' + row['structure_id'] + DB.ENT_FORMAT
                 values = row['chain_pair']
                 pair = calContactSeperateBuriedArea(path, values)
                 df = pd.DataFrame([pair])
-                pdbStru.saveCsv(DB.sasa_db, DB.dimer_ChainPair_sasa_bsa_csv, df, test)
+                pdbStru.saveCsv(DB.sasa_db, DB.ChainPair_sasa_bsa_csv, df, test)
                 buried_list.append(pair)
+        elif mer == 'dimer':
+            df = pd.read_csv(DB.dimer_csv)
+            li = list(df['structure_id'])
+            for index, row in csv_df.iterrows():
+                if row['structure_id'] in li:
+                    path = DB.pdb_db + '/pdb' + row['structure_id'] + DB.ENT_FORMAT
+                    values = row['chain_pair']
+                    pair = calContactSeperateBuriedArea(path, values)
+                    df = pd.DataFrame([pair])
+                    pdbStru.saveCsv(DB.sasa_db, DB.dimer_ChainPair_sasa_bsa_csv, df, test)
+                    buried_list.append(pair)
+    except OSError as e:
+        print(e)
     return buried_list
 
 
+################
+# residue pair #
+################
 def getResSasa(clean, k, v):
     """
         Get SASA by passing a protein structure,
@@ -128,7 +191,9 @@ def remainTargetRes(struc, target_chain):
     return struc
 
 
-def getResAsaByChainResPairs(file_format, test=None):
+# Note this function need to generate the ChainResPairs_csv.csv by
+# the getMaxContactChainPairs function first.
+def getResAsaByChainResPairsCsv(test=None):
     """
         Read exist chain residues pairs use it to calculate the combine residues,
         SASA and without combine residues' SASA. Store dict result and save as csv.
@@ -153,7 +218,7 @@ def getResAsaByChainResPairs(file_format, test=None):
             list_b.append(B.split('_')[0] + '_' + B.split('_')[2])
         chain_res = list(set(list_a)) + list(set(list_b))
 
-        pdb_path = DB.pdb_db + '/pdb' + row['structure_id'] + file_format
+        pdb_path = DB.pdb_db + '/pdb' + row['structure_id'] + DB.ENT_FORMAT
         for c in chain_res:
             chain_arr = []
             structure = pdbStru.getOneStrucByPath(pdb_path)
@@ -171,55 +236,62 @@ def getResAsaByChainResPairs(file_format, test=None):
         df = pd.DataFrame({'structure_id': [stru_pair['structure_id']], 'res_sasa': [stru_pair['res_sasa']]},
                           columns=['structure_id', 'res_sasa'])
         pdbStru.saveCsv(DB.sasa_db, DB.ResPairs_sasa_csv, df, test)
+        print(stru_pair)
     return stru_pair
 
 
-def merging(file1, file2, merge_file):
-    """
-        Merge two csv file.
-
-        :param file1: csv1 file
-        :param file2: csv2 file
-        :param merge_file: path of merge file
-    """
-    csv1 = pd.read_csv(file1)
-    csv2 = pd.read_csv(file2)
-    df = pd.merge(csv1, csv2)
-    df.to_csv(merge_file, index=False, header=True)
+#######################
+# Generate CSV dataset#
+#######################
+# Combined chain pair, residue pair information with sasa of residues together which will like:
+# ['structure_id', 'chains', 'chain_pair', 'res_pair']+['structure_id', 'res_sasa']=
+# ['structure_id', 'chains', 'chain_pair', 'res_pair', 'res_sasa']
+def generateChainResPairSasaBsaCsv():
+    merging(DB.ChainResPairs_csv, DB.ResPairs_sasa_csv, join(DB.sasa_db, 'chainResPair_sasa_bsa_csv.csv'))
 
 
-def fullStrucASA(struc):
-    """
-        Get sasa by a Biopython structure.
-
-        :param struc: a Biopython structure.
-    """
-    freesasa_structure = freesasa.structureFromBioPDB(struc[0])
-    result = freesasa.calc(freesasa_structure)
-    return '%0.2f' % result.totalArea()
+# Generate sasa, bsa of all PDB chain pair
+# ['Structure_id','chain_pair','total_sasa','pair_length','bsa']
+def generateAllChainPairSasaBsa():
+    generateChainPairSasaBsaByChainPairCsv()
 
 
-def generateASABystructure(struc, dir_path, file, test=None):
-    """
-        Get structure_id,chain_id, sasa by a Biopython structure.
-        And save as csv file.
+# Generate sasa, bsa of dimer chain pair
+# ['Structure_id','chain_pair','total_sasa','pair_length','bsa']
+def generateDimerChainPairSasaBsa():
+    generateChainPairSasaBsaByChainPairCsv(mer='dimer')
 
-        :param struc: a Biopython structure
-        :param dir_path: a target directory
-        :param file: a target file
-        :param test: if pass nothing to test, data will save into csv, otherwise is for test
-        :return: a sasa dictionary, format as:
-        {'structure_id':'101m', 'chain_id': 'A','sasa': 8180.48}
-    """
-    sasa = fullStrucASA(struc)
-    chains = pdbStru.PDBstructure(struc).chainLine()
-    sasa_dict={}
-    sasa_dict['structure_id'] = struc.id
-    sasa_dict['chain_id'] = chains
-    sasa_dict['sasa'] = sasa
-    df = pd.DataFrame([sasa_dict], columns=['structure_id', 'chain_id', 'sasa'])
-    pdbStru.saveCsv(dir_path, file, df, test)
-    return sasa_dict
+
+# Generate sasa of residue pair for all PDB
+# ['structure_id', 'res_sasa']
+def generateAllResPairSasaBsa():
+    getResAsaByChainResPairsCsv()
+
+# Single chain#
+# For generate sasa of PDB single chain and AlphaFold function
+# ['structure_id', 'chain_id', 'sasa']
+def loadListForSasaSingleChain(pdb_list, path):
+    for pdb in pdb_list:
+        structure = pdbStru.getOneStrucByPath(pdb)
+        struc = pdbStru.cleanStructure(structure)
+        if len(pdbStru.PDBstructure(struc).allChains()) == 1:
+            getASABystructure(struc, path)
+        else:
+            continue
+
+
+# Generate sasa of PDB single chain
+# ['structure_id', 'chain_id', 'sasa']
+def generateSasaPDBSingleChain():
+    pdb_list = pdbStru.loadingPDB()
+    loadListForSasaSingleChain(pdb_list, DB.PDBsingleChain_sasa_csv)
+
+
+# Generate sasa of AlphaFold single chain
+# ['structure_id', 'chain_id', 'sasa']
+def generateSasaAlphaSingleChain():
+    pdb_list = pdbStru.loadingAlpha()
+    loadListForSasaSingleChain(pdb_list, DB.alphaFoldHuman_sasa_csv)
 
 
 if __name__ == '__main__':
@@ -229,6 +301,8 @@ if __name__ == '__main__':
 
     parser = OptionParser()
 
+    parser.add_option("--getchainssasa", dest="getchainssasa", action="store_true",
+                      help="get get chains sasa", metavar="Freesasa")
     parser.add_option("--sasa", dest="sasa", action="store_true",
                       help="get sasa by chain list", metavar="Freesasa")
     parser.add_option("--totalsasa", dest="totalsasa", action="store_true",
@@ -261,7 +335,7 @@ if __name__ == '__main__':
         path = test_directory + '/pdb' + pdb_code + DB.ENT_FORMAT
         structure = pdbStru.getOneStrucByPath(path)
         struc = pdbStru.cleanStructure(structure)
-        sasa = fullStrucASA(struc)
+        sasa = getASAByStruc(struc)
         if sasa != '54779.16':
             print('Fail')
 
@@ -288,4 +362,16 @@ if __name__ == '__main__':
         struc = pdbStru.cleanStructure(structure)
         sasa = calContactSeperateBuriedArea(path, chains)
         if sasa['bsa'].strip() != '1815.48':
+            print('Fail')
+
+    # test calContactSeperateBuriedArea
+    if options.getchainssasa:
+        # python PDBFreesasa.py --getchainssasa --pdb_code sample
+        pdb_code = 'sample'
+        path = test_directory + '/' + pdb_code + DB.PDB_FORMAT
+        structure = pdbStru.getOneStrucByPath(path)
+        struc = pdbStru.cleanStructure(structure)
+        sasa = getASABystructure(struc, 'test', test=None)
+        if (sasa['sasa'].strip() != '1276.65' or sasa['structure_id'] != 'sample'
+                or sasa['chain_id'] != 'F'):
             print('Fail')
