@@ -144,6 +144,12 @@ if __name__ == '__main__':
     # Generate sasa of AlphaFold single chain
     # generateSasaAlphaSingleChain()
 
+    # Generate dssp of PDB single chain
+    # generateDsspPDBSingleChain()
+
+    # Generate dssp of AlphaFold single chain
+    # generateDsspAlphaFold()
+
     # Generate maximum contact chain pair in one structure
     # generateAllPDBContact
 
