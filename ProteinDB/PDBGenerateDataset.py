@@ -3,7 +3,7 @@ import PDBContactMap as pdbMap
 import PDBFreesasa as pdbSasa
 import DB
 from os.path import join
-import PDBFreesasa as pdbDssp
+import PDBdssp as pdbDssp
 
 
 #########################
@@ -11,8 +11,8 @@ import PDBFreesasa as pdbDssp
 #########################
 # Generate all dimer into CSV file.
 # ['structure_id']
-def generateDimer():
-    pdbStru.getAllDimerPDB(pdbStru.loadingPDB())
+def generateDimer(test=None):
+    pdbStru.getAllDimerPDB(pdbStru.loadingPDB(),test)
 
 
 #######################################
