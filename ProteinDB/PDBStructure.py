@@ -242,7 +242,7 @@ def global_stoichiometry(pbd_id):
                 return i['oligomeric_state']
 
 
-def getAllDimerPDB(pdb_list):
+def getAllDimerPDB(pdb_list, test):
     """
         Return a dimer list for all PDB structures.
 
@@ -256,7 +256,7 @@ def getAllDimerPDB(pdb_list):
         if stoichiometry == 'Hetero 2-mer':
             dimer_list.append(pbd_id)
             dimer_df = pd.DataFrame({'structure_id': [pbd_id]}, columns=['structure_id'])
-            saveCsv(DB.structure_db, DB.dimer_csv, dimer_df)
+            saveCsv(DB.structure_db, DB.dimer_csv, dimer_df, test)
     return dimer_list
 
 
