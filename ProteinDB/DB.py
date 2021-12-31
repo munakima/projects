@@ -45,3 +45,4 @@ alphaFoldHuman_sasa_csv = join(sasa_db, 'AlphaFoldHuman_sasa_csv.csv')
 dssp_db = join(db_dir, 'dssp_db')
 dssp_path = '/home/ubuntu/anaconda3/bin/mkdssp'
 Alpha_NumberHelixLoopsSheet_csv = join(dssp_db, 'Alpha_NumberHelixLoopsSheet.csv')
+PDB_NumberHelixLoopsSheet_csv = join(dssp_db, 'PDB_NumberHelixLoopsSheet.csv')

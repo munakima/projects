@@ -3,6 +3,7 @@ import PDBContactMap as pdbMap
 import PDBFreesasa as pdbSasa
 import DB
 from os.path import join
+import PDBFreesasa as pdbDssp
 
 
 #########################
@@ -47,6 +48,22 @@ def generateSasaAlphaSingleChain(test=None):
     pdb_list = pdbStru.loadingAlpha()
     pdbSasa.loadListForSasaSingleChain(pdb_list, DB.alphaFoldHuman_sasa_csv, test)
 
+
+########################
+# Generate DSSP dataset#
+########################
+# For generate dssp of AlphaFold
+# ['structure_id', 'loops', 'alpha_helix', 'beta_sheet']
+def generateDsspAlphaFold(test=None):
+    pdb_list = pdbStru.pdbStru.loadingPDB()
+    pdbDssp.loadListForDSSPAlphaFold(pdb_list, DB.Alpha_NumberHelixLoopsSheet_csv, test)
+
+
+# For generate dssp of PDB
+# ['structure_id', 'loops', 'alpha_helix', 'beta_sheet']
+def generateDsspPDBSingleChain(test=None):
+    pdb_list = pdbStru.loadingAlpha()
+    pdbDssp.loadListForDSSPAlphaFold(pdb_list, DB.PDB_NumberHelixLoopsSheet_csv, test)
 ###################################
 # Generate maximum contact dataset#
 ###################################
