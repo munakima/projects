@@ -4,7 +4,7 @@ import DB
 import pandas as pd
 
 
-def getNumberHelixLoopsSheet(structure):
+def getNumberHelixLoopsSheet(structure, path, test):
     model = structure[0]
     dssp = DSSP(model, path, dssp=DB.dssp_path)
     dict_HelixLoopsSheet = {}
@@ -25,21 +25,21 @@ def getNumberHelixLoopsSheet(structure):
     count_H = 0
     count_E = 0
     for i in range(0, len(line)):
-        if (line[i] == 'C'):
+        if line[i] == 'C':
             count_c += 1
-        elif (line[i] != 'C' and i != 0 and count_c > 3):
+        elif line[i] != 'C' and i != 0 and count_c > 3:
             newline += 'C'
             count_C += 1
             count_c = 0
-        if (line[i] == 'H' and line[i - 1] != line[i]):
+        if line[i] == 'H' and line[i - 1] != line[i]:
             newline += 'H'
             count_H += 1
-        elif (line[i] == 'E' and line[i - 1] != line[i]):
+        elif line[i] == 'E' and line[i - 1] != line[i]:
             newline += 'E'
             count_E += 1
-        elif (line[i] != 'C'):
+        elif line[i] != 'C':
             count_c = 0
-        elif (line[i] == 'C' and i == (len(line) - 1) and count_c > 3):
+        elif line[i] == 'C' and i == (len(line) - 1) and count_c > 3:
             newline += 'C'
             count_C += 1
             count_c = 0
@@ -57,13 +57,16 @@ def getNumberHelixLoopsSheet(structure):
     df = pd.DataFrame(
         {'structure_id': [structure.id], 'loops': [count_C], 'alpha_helix': [count_H], 'beta_sheet': [count_E]},
         columns=['structure_id', 'loops', 'alpha_helix', 'beta_sheet'])
-    pdbStru.saveCsv(DB.dssp_db, DB.Alpha_NumberHelixLoopsSheet_csv, df)
+    pdbStru.saveCsv(DB.dssp_db, path, df, test)
 
 
-if __name__ == '__main__':
-    alpha_list = pdbStru.getAllAlphaFoldHumanId()
-    for path in alpha_list:
-        structure = pdbStru.getOneStrucByPath(path)
-        print(structure.id)
+# For generate dssp for database
+# ['structure_id', 'loops', 'alpha_helix', 'beta_sheet']
+def loadListForDSSPAlphaFold(pdb_list,path, test):
+    for pdb in pdb_list:
+        structure = pdbStru.getOneStrucByPath(pdb)
         struc = pdbStru.cleanStructure(structure)
-        getNumberHelixLoopsSheet(struc)
+        if len(pdbStru.PDBstructure(struc).allChains()) == 1:
+            getNumberHelixLoopsSheet(struc, path, test)
+        else:
+            continue
