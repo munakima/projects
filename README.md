@@ -7,6 +7,14 @@ Here are the projects included in this repository:
 
 #### :ticket: [eTickets System](./https://github.com/munakima/projects/tree/main/eTickets%20system)
 
+eTickets is a web application that allows users to browse movies, book tickets and manage the database. It is built using the following technologies:
+- EF Code First
+- Repository Pattern
+- Unit of Work Pattern
+- Services Pattern
+- Dependency Injection
+- Unit Testing
+
 ### 🐍 Python Projects
 
 This list shows a collection of my Python projects. Each project is a standalone application or script that demonstrates my Python coding skills and understanding of various Python libraries and frameworks.
