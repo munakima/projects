@@ -5,6 +5,8 @@ Here are the projects included in this repository:
 
 ### :computer: C# Projects
 
+This list shows a collection of my C# projects. Each project is a standalone application or script that demonstrates my Python coding skills and understanding of technologies and frameworks.
+
 #### :ticket: [eTickets System](https://github.com/munakima/projects/tree/main/eTickets%20system)
 
 eTickets is a web application that allows users to browse movies, book tickets and manage the database. It is built using the following technologies:
