@@ -5,7 +5,7 @@ Here are the projects included in this repository:
 
 ### :computer: C# Projects
 
-#### :ticket: [eTickets System](./https://github.com/munakima/projects/tree/main/eTickets%20system)
+#### :ticket: [eTickets System](./https://github.com/munakima/projects/tree/main/eTickets system)
 
 eTickets is a web application that allows users to browse movies, book tickets and manage the database. It is built using the following technologies:
 - EF Code First
