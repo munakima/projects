@@ -9,7 +9,7 @@ This repository contains a collection of my Python projects. Each project is a s
 
 Here are the projects included in this repository:
 
-### 🩺 [Breast Cancer Wisconsin (Diagnostic)](./Breast_Cancer_Wisconsin_(Diagnostic))
+### 🩺 [Breast Cancer Wisconsin (Diagnostic)](./Breast_Cancer_Wisconsin_(Diagnostic).ipynb)
 
 This project is a machine learning model that predicts whether a tumor is malignant or benign based on various features extracted from medical images of breast tissue. The model is trained on the [Breast Cancer Wisconsin (Diagnostic) dataset](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)) using the [scikit-learn](https://scikit-learn.org/) machine learning library.
 
