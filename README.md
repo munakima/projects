@@ -1,13 +1,17 @@
+This repository contains a collection of my C# and Python projects.
 # :computer: C# Projects
 
 ## :ticket: eTickets System
 # 🐍 Python Projects
 
-This repository contains a collection of my Python projects. Each project is a standalone application or script that demonstrates my Python coding skills and understanding of various Python libraries and frameworks.
+This list shows a collection of my Python projects. Each project is a standalone application or script that demonstrates my Python coding skills and understanding of various Python libraries and frameworks.
 
 ## 📚 Projects
 
 Here are the projects included in this repository:
+
+### 🩺 [ProteinDB](./https://github.com/munakima/projects/tree/main/ProteinDB)
+
 
 ### 🩺 [Breast Cancer Wisconsin (Diagnostic)](./Breast_Cancer_Wisconsin_(Diagnostic).ipynb)
 
