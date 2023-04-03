@@ -1,5 +1,15 @@
-# ProteinDB
-Collection and analysis of protein coordinates and derived data.
+# :snake: Biomolecular Atomic Data Collection System
+
+Collection and analysis of protein coordinates and derived data. This Python project is a system for cleaning up raw data and extracting information from Protein Data Bank and AlphaFold Protein Structure Databases. It is designed to help predict protein folding, protein 3D structures, and protein-protein interactions. Here are some of its key achievements:
+
+- :dna: Calculates the numbers of α-helix, β-sheet, and loops by using the DSSP module of Biopython.
+- :link: Provides chain pairs and residue pairs that have the maximum intra-molecular contact atom.
+- :rocket: Improves the speed of distance calculation for atoms in each PDB by 70% by using NeighborSearch instead of the traditional algorithm. On average, each calculation saved 5 minutes.
+- :chart_with_upwards_trend: Calculates accessible surface area and buried surface area for each of the residues before and after combining by using FreeSASA.
+- :bar_chart: Uses pandas and matplotlib for data analysis and visualization.
+
+This project was developed from 02/2021 to 01/2022.
+
 
 # Requirements.
 
