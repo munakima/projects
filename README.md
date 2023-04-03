@@ -36,7 +36,7 @@ This project is a machine learning model that predicts whether a tumor is malign
 
 After exploring the data, I found that removing outliers using Interquartile range (IQR) significantly improved the accuracy of the model. Using my get_outlier and get_outlier_by_weight functions, I was able to remove the outliers and achieve an accuracy of 1.0 with the RandomForestClassifier algorithm. 
 
-#### 💰 [Medical Cost Estimation](./Medical Cost Estimation.ipynb)
+#### 💰 [Medical Cost Estimation](./Medical_Cost_Estimation.ipynb)
 
 This project is a data analysis and visualization project that explores the [Medical Cost Personal Datasets](https://www.kaggle.com/mirichoi0218/insurance) on Kaggle. The project aims to answer questions like "What factors contribute to higher medical costs?" and "How does insurance coverage affect medical costs?" using Python data analysis and visualization libraries like [pandas](https://pandas.pydata.org/) and [matplotlib](https://matplotlib.org/).
 
