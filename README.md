@@ -38,12 +38,46 @@ After exploring the data, I found that removing outliers using Interquartile ran
 
 #### 💰 [Medical Cost Estimation](./Medical_Cost_Estimation.ipynb)
 
-This project is a data analysis and visualization project that explores the [Medical Cost Personal Datasets](https://www.kaggle.com/mirichoi0218/insurance) on Kaggle. The project aims to answer questions like "What factors contribute to higher medical costs?" and "How does insurance coverage affect medical costs?" using Python data analysis and visualization libraries like [pandas](https://pandas.pydata.org/) and [matplotlib](https://matplotlib.org/).
+This project is a data analysis and visualization project that explores the [Medical Cost Personal Datasets](https://www.kaggle.com/mirichoi0218/insurance) on Kaggle. The project aims to answer questions like "What factors contribute to higher medical costs?" using Python data analysis and visualization libraries like [pandas](https://pandas.pydata.org/) and [matplotlib](https://matplotlib.org/).
+
+The project starts with loading the dataset and preparing it for analysis. Missing values and duplicate data are checked, and then the data is analyzed and visualized. The correlation between various features and the medical cost charged is determined through feature selection, with smoking habits being the most important feature.
+
+The data is then cleaned by removing outliers, I implemented a strategy for outlier removal that involved grouping the data based on smoking status, age, and charges. Outliers were then identified and removed separately for smokers and non-smokers. For smokers, I removed individuals at a certain age whose medical costs exceeded those of the oldest individuals in the dataset. The same criterion was applied for non-smokers to identify and remove outliers. 
+
+Feature encoding is used to transform categorical variables into numerical variables for use in machine learning algorithms. Three regression algorithms, namely Linear Regression, XGBRegressor, and RandomForestRegressor, are trained and evaluated. The RandomForestRegressor algorithm performs the best with an R-squared value of 0.9698, indicating that it can predict the medical cost charged by healthcare providers with high accuracy.
+
+##### Data analysis 
+What factors contribute to higher medical costs?
+- The correlation between the features looks like:
+
+| Feature 1 | Feature 2 | Correlation Coefficient|
+|-----------|-----------|------------------------|
+| charges   | charges   | 1.000000               |
+| charges   | smoker    | 0.787251               |
+| charges   | age       | 0.299008               |
+| charges   | bmi       | 0.198341               |
+| charges   | children  | 0.067998               |
+| charges   | sex       | 0.057292               |
+| charges   | region    | 0.006208               |
+
+Based on the correlation coefficients, the factors that contribute the most to higher medical costs are smoking, age, and BMI. Specifically, smoking has the highest correlation with medical costs (0.787251), meaning that smokers tend to have higher medical costs than non-smokers. Age also has a moderate positive correlation (0.299008), indicating that as people get older, their medical costs tend to increase. 
+
+BMI has a weak positive correlation (0.198341), but after conducting a separate analysis on individuals who smoke, it was found that as the BMI increases, there is a corresponding increase in medical costs. However, this correlation was not observed in non-smokers. 
+
+On the other hand, sex and region seem to have a negligible impact on medical costs, according to the low correlation coefficients (0.057292 and 0.006208, respectively).
 
 #### 🩺 [Pneumonia Classification](./Pneumonia_Classification.ipynb)
 
 This project is a deep learning model that classifies chest X-ray images into normal and pneumonia cases. The model is trained on the [Chest X-Ray Images (Pneumonia)](https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia) dataset using the [Keras](https://keras.io/) deep learning library.
 
+This project implementing a convolutional neural network (CNN) for classifying pneumonia images using TensorFlow and Keras. The code imports necessary libraries, such as os, shutil, and matplotlib, and sets up a data generator for image augmentation. The CNN model is defined with several convolutional layers, spatial dropout, batch normalization, max pooling, and dense layers with sigmoid activation. The model is compiled using the RMSprop optimizer and binary cross-entropy loss. The code also sets up early stopping and saves the trained model weights to files. The training process is performed using the fit method with callbacks for early stopping and validation. Finally, the model is evaluated using the evaluate method, which returns the loss and accuracy on the evaluation dataset.
+
+- The model was compiled using the RMSprop optimizer, binary cross-entropy loss function, and accuracy metric.
+- After training on the training dataset, the model achieved a training loss of 0.2440 and a training accuracy of 0.9068.
+- The model was evaluated on the validation dataset, and it achieved a loss of 0.3691 and an accuracy of 0.843.    
+    
+
+    
 Feel free to explore the code and learn more about these projects. If you have any questions or suggestions, please feel free to reach out to me.
 
 Thank you for visiting my Python projects repository! 🙏
