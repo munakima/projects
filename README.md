@@ -1,20 +1,20 @@
-# 📚 Projects
+## 📚 Projects
 
 This repository contains a collection of my C# and Python projects.
 Here are the projects included in this repository:
 
-## :computer: C# Projects
+### :computer: C# Projects
 
-### :ticket: eTickets System
-## 🐍 Python Projects
+#### :ticket: [eTickets System](./https://github.com/munakima/projects/tree/main/eTickets%20system)
+
+### 🐍 Python Projects
 
 This list shows a collection of my Python projects. Each project is a standalone application or script that demonstrates my Python coding skills and understanding of various Python libraries and frameworks.
 
 #### :dna: [ProteinDB](./https://github.com/munakima/projects/tree/main/ProteinDB)
 
 A Python system for cleaning up raw data and extracting information from 
-[Protein Data Bank](https://www.rcsb.org/docs/programmatic-access/file-download-services) and [AlphaFold Protein](https://alphafold.ebi.ac.uk/download) Structure Databases. It will help 
-predict protein folding, protein 3D structures and protein-protein interactions.
+[Protein Data Bank](https://www.rcsb.org/docs/programmatic-access/file-download-services) and [AlphaFold Protein](https://alphafold.ebi.ac.uk/download) Structure Databases. It will help predict protein folding, protein 3D structures and protein-protein interactions.
 
 
 #### 🩺 [Breast Cancer Wisconsin (Diagnostic)](./Breast_Cancer_Wisconsin_(Diagnostic).ipynb)
