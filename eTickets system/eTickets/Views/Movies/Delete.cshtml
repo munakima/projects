@@ -1,0 +1,83 @@
+﻿@model Movie
+@{
+    ViewData["Title"] = "Movie Details";
+}
+
+<div class="row text">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h1>Delete confirmation for @Model.Name</h1>
+        </p>
+        <div class="row">
+            <div class="col-md-8 offset-2">
+                <form class="" asp-controller="Movies" asp-action="Delete" method="post">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div class="form-group text-center">
+                        <img class="img-thumbnail rounded-circle" id="ProfilePicturePreview" />
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="ImageURL" class="control-lable"></label>
+                        <input asp-for="ImageURL" class="form-control" />
+                        <span asp-validation-for="ImageURL" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-lable"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Description" class="control-lable"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="StartDate" class="control-lable"></label>
+                        <input asp-for="StartDate" class="form-control" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EndDate" class="control-lable"></label>
+                        <input asp-for="EndDate" class="form-control" />
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Cinema.Name" class="control-lable"></label>
+                        <input asp-for="Cinema.Name" class="form-control" />
+                        <span asp-validation-for="Cinema.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Producer.FullName" class="control-lable"></label>
+                        <input asp-for="Producer.FullName" class="form-control" />
+                        <span asp-validation-for="Producer.FullName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MovieCategory" class="control-lable"></label>
+                        <input asp-for="MovieCategory" class="form-control" />
+                        <span asp-validation-for="MovieCategory" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-danger float-end mt-2"><i class="bi bi-trash"></i> Confirm Delete</button>
+                        <a class="btn btn-outline-secondary mt-2" asp-controller="Movies" asp-action="Index">Show All</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            var output = document.getElementById('ProfilePicturePreview');
+            output.src = $("#ProfilePictureURL").val();
+        })
+        $("#ProfilePictureURL").on("change", function () {
+            var output = document.getElementById('ProfilePicturePreview');
+            output.src = $(this).val();
+        })
+    </script>
+}
