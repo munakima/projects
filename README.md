@@ -10,7 +10,7 @@ Here are the projects included in this repository:
 
 This list shows a collection of my Python projects. Each project is a standalone application or script that demonstrates my Python coding skills and understanding of various Python libraries and frameworks.
 
-#### 🩺 [ProteinDB](./https://github.com/munakima/projects/tree/main/ProteinDB)
+#### :dna: [ProteinDB](./https://github.com/munakima/projects/tree/main/ProteinDB)
 
 A Python system for cleaning up raw data and extracting information from 
 [Protein Data Bank](https://www.rcsb.org/docs/programmatic-access/file-download-services) and [AlphaFold Protein](https://alphafold.ebi.ac.uk/download) Structure Databases. It will help 
