@@ -9,13 +9,15 @@ This list shows a collection of my C# projects. Each project is a standalone app
 
 #### :ticket: [eTickets System](https://github.com/munakima/projects/tree/main/eTickets%20system)
 
+eTickets is a web application that allows users to browse movies, book tickets and manage the database. It is built using the following technologies:    
+- C#, .NET Core, ASP.NET Core MVC, Entity Framework Core, Razor,HTML, CSS, JavaScript, Microsoft SQL Server, EF Code First, Repository Pattern, Unit of Work Pattern, Services Pattern, Dependency Injection, Unit Testing. 
+
+#### :ticket: [EDTrackingService](https://github.com/munakima/EDTrackingService)
+
+EDTrackingService is a package delivery tracking system designed to provide end-to-end visibility of package delivery operations. The system is built on a multi-layered architecture consisting of a Data Access Layer (DAL), Data Access Layer API (DAL_API), Business Logic Layer (BLL), Business Logic Layer API (BLL_API), Data Transfer Object (DTO) and User Interface (UI) layer.
 eTickets is a web application that allows users to browse movies, book tickets and manage the database. It is built using the following technologies:
-- EF Code First
-- Repository Pattern
-- Unit of Work Pattern
-- Services Pattern
-- Dependency Injection
-- Unit Testing
+- C#, .NET Framework, ASP.NET, ASP.NET MVC, Entity Framework, HTML, Razor, CSS, JavaScript,  EF Code First, Repository Pattern, Facade Pattern, gateway Pattern, Dependency Injection(Ninject), Unit Testing.
+
 
 ### 🐍 Python Projects
 
