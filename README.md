@@ -30,7 +30,7 @@ The web application is designed for the EASV academy, allowing users to browse u
 
 This list shows a collection of my Python projects. Each project is a standalone application or script that demonstrates my Python coding skills and understanding of various Python libraries and frameworks.
 
-#### :dna: [ProteinDB](./ProteinDB)
+#### :dna: [ProteinDB](https://github.com/munakima/projects/tree/main/ProteinDB)
 
 A Python system for cleaning up raw data and extracting information from 
 [Protein Data Bank](https://www.rcsb.org/docs/programmatic-access/file-download-services) and [AlphaFold Protein](https://alphafold.ebi.ac.uk/download) Structure Databases. It will help predict protein folding, protein 3D structures and protein-protein interactions.
