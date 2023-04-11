@@ -18,6 +18,13 @@ EDTrackingService is a package delivery tracking system designed to provide end-
 eTickets is a web application that allows users to browse movies, book tickets and manage the database. It is built using the following technologies:
 - C#, .NET Framework, ASP.NET, ASP.NET MVC, Entity Framework, HTML, Razor, CSS, JavaScript,  EF Code First, Repository Pattern, Facade Pattern, gateway Pattern, Dependency Injection(Ninject), Unit Testing.
 
+#### :fork_and_knife: [ChopsticksApp](https://github.com/munakima/ChopsticksApp)
+
+A web application for managing restaurant orders would allow customers to book a table, place take-away orders, and view the restaurant's menu online. The application would also enable restaurant staff to manage orders, manage data. Customers would be able to create an account, browse the menu, place orders. 
+
+#### :ticket: [EasvTickets](https://github.com/munakima/EasvTickets)
+
+The web application is designed for the EASV academy, allowing users to browse upcoming events, select and book tickets for their desired events. Once a user books a ticket, a unique QR code is generated and added to a PDF ticket, which can be downloaded and used as a ticket for the event. 
 
 ### 🐍 Python Projects
 
