@@ -17,10 +17,11 @@ eTickets is a web application that allows users to browse movies, book tickets a
 
 ## Technologies Used
 
-- .NET Framework
 - C#
-- ASP.NET MVC
-- Entity Framework
+- .NET Core
+- ASP.NET Core MVC
+- Entity Framework Core
+- Razor 
 - HTML, CSS, and JavaScript
 - Microsoft SQL Server
 
