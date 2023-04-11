@@ -1,4 +1,4 @@
-## 📚 Projects
+## <h1 id="top">📚 Projects</h1>
 
 This repository contains a collection of my C# and Python projects.
 Here are the projects included in this repository:
@@ -24,8 +24,8 @@ A web application for managing restaurant orders would allow customers to book a
 
 #### :ticket: [EasvTickets](https://github.com/munakima/EasvTickets)
 
-The web application is designed for the EASV academy, allowing users to browse upcoming events, select and book tickets for their desired events. Once a user books a ticket, a unique QR code is generated and added to a PDF ticket, which can be downloaded and used as a ticket for the event. 
-
+The web application is designed for the EASV academy, allowing users to browse upcoming events, select and book tickets for their desired events. Once a user books a ticket, a unique QR code is generated and added to a PDF ticket, which can be downloaded and used as a ticket for the event.     
+ 
 ### 🐍 Python Projects
 
 This list shows a collection of my Python projects. Each project is a standalone application or script that demonstrates my Python coding skills and understanding of various Python libraries and frameworks.
@@ -43,8 +43,10 @@ This project is a machine learning model that predicts whether a tumor is malign
 - Technologies Used: Python, Pandas, NumPy, Matplotlib, Seaborn, Scikit-learn
 - Data Cleaning and Exploration: Checking for missing values, Checking for duplicate data, Removing the "Unnamed" column, Converting "diagnosis" to category type, Removing outliers
 
-After exploring the data, I found that removing outliers using Interquartile range (IQR) significantly improved the accuracy of the model. Using my get_outlier and get_outlier_by_weight functions, I was able to remove the outliers and achieve an accuracy of 1.0 with the RandomForestClassifier algorithm. 
-
+After exploring the data, I found that removing outliers using Interquartile range (IQR) significantly improved the accuracy of the model. Using my get_outlier and get_outlier_by_weight functions, I was able to remove the outliers and achieve an accuracy of 1.0 with the RandomForestClassifier algorithm.        
+    
+<a href="#top" style="position:fixed;bottom:20px;right:20px;color:red;">Go to top</a>   
+     
 #### 💰 [Medical Cost Estimation](./Medical_Cost_Estimation.ipynb)
 
 This project is a data analysis and visualization project that explores the [Medical Cost Personal Datasets](https://www.kaggle.com/mirichoi0218/insurance) on Kaggle. The project aims to answer questions like "What factors contribute to higher medical costs?" using Python data analysis and visualization libraries like [pandas](https://pandas.pydata.org/) and [matplotlib](https://matplotlib.org/).
@@ -85,7 +87,7 @@ This project implementing a convolutional neural network (CNN) for classifying p
 - After training on the training dataset, the model achieved a training loss of 0.2440 and a training accuracy of 0.9068.
 - The model was evaluated on the validation dataset, and it achieved a loss of 0.3691 and an accuracy of 0.843.    
     
-
+<a href="#top" style="position:fixed;bottom:20px;right:20px;color: green;">Go to top</a>
     
 Feel free to explore the code and learn more about these projects. If you have any questions or suggestions, please feel free to reach out to me.
 
