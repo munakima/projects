@@ -91,6 +91,10 @@ This project implementing a convolutional neural network (CNN) for classifying p
 
 This is a Convolutional Neural Network (CNN) project that classifies images of cats and dogs. The CNN model is built using the Keras library in Python. The project involves loading and preprocessing the images, including scaling and augmenting the training data. The model architecture consists of multiple convolutional layers with max pooling and batch normalization, followed by fully connected layers. The model is compiled with the binary cross-entropy loss function and the RMSprop optimizer. The performance of the model is evaluated using accuracy as the metric. 
 
+- Developed a CNN to classify images into dog and cat with a 83.3%.
+- Compile the model and train it with the optimizer RMSprop as this was the optimizer 
+and value with the best accuracy compared to SDG and adam.
+
 <a href="#top" style="position:fixed;bottom:20px;right:20px;color: green;">Go to top</a>
     
 Feel free to explore the code and learn more about these projects. If you have any questions or suggestions, please feel free to reach out to me.
