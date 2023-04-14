@@ -39,7 +39,7 @@ A Python system for cleaning up raw data and extracting information from
 [Protein Data Bank](https://www.rcsb.org/docs/programmatic-access/file-download-services) and [AlphaFold Protein](https://alphafold.ebi.ac.uk/download) Structure Databases. It will help predict protein folding, protein 3D structures and protein-protein interactions.
 
 
-#### 🩺 [Breast Cancer Wisconsin (Diagnostic)](./Breast_Cancer_Wisconsin_(Diagnostic).ipynb)
+#### 🩺 [Breast Cancer Wisconsin (Diagnostic)](./Breast_Cancer_Wisconsin_(Diagnostic).ipynb) - Data cleaning, Random Forest classifier for predictive modeling
 
 This project is a machine learning model that predicts whether a tumor is malignant or benign based on various features extracted from medical images of breast tissue. The model is trained on the [Breast Cancer Wisconsin (Diagnostic) dataset](https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)) using the [scikit-learn](https://scikit-learn.org/) machine learning library.
 
@@ -47,7 +47,7 @@ This project is a machine learning model that predicts whether a tumor is malign
 - Data Cleaning and Exploration: Checking for missing values, Checking for duplicate data, Removing the "Unnamed" column, Converting "diagnosis" to category type, Removing outliers
 
 After exploring the data, I found that removing outliers using Interquartile range (IQR) significantly improved the accuracy of the model. Using my get_outlier and get_outlier_by_weight functions, I was able to remove the outliers and achieve an accuracy of 1.0 with the RandomForestClassifier algorithm.    
-#### 💰 [Medical Cost Estimation](./Medical_Cost_Estimation.ipynb)
+#### 💰 [Medical Cost Estimation](./Medical_Cost_Estimation.ipynb) - Data cleaning, feature encoding, data analysis, machine learning regression model
 
 This project is a data analysis and visualization project that explores the [Medical Cost Personal Datasets](https://www.kaggle.com/mirichoi0218/insurance) on Kaggle. The project aims to answer questions like "What factors contribute to higher medical costs?" using Python data analysis and visualization libraries like [pandas](https://pandas.pydata.org/) and [matplotlib](https://matplotlib.org/).
 
