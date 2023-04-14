@@ -1,4 +1,4 @@
-## <h1 id="top">📚 Python script</h1>
+## <h1 id="top">📚 Python scripts</h1>
 
 This Python script are implementations of probability and statistics concepts using Python and the SciPy library. 
 
