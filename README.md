@@ -77,7 +77,7 @@ BMI has a weak positive correlation (0.198341), but after conducting a separate 
 
 On the other hand, sex and region seem to have a negligible impact on medical costs, according to the low correlation coefficients (0.057292 and 0.006208, respectively).
 
-#### 🩺 [Pneumonia Classification](./Pneumonia_Classification.ipynb)
+#### 🩺 [Pneumonia Classification](./Pneumonia_Classification.ipynb) -  convolutional neural network for image classification
 
 This project is a deep learning model that classifies chest X-ray images into normal and pneumonia cases. The model is trained on the [Chest X-Ray Images (Pneumonia)](https://www.kaggle.com/paultimothymooney/chest-xray-pneumonia) dataset using the [Keras](https://keras.io/) deep learning library.
 
@@ -86,7 +86,11 @@ This project implementing a convolutional neural network (CNN) for classifying p
 - The model was compiled using the RMSprop optimizer, binary cross-entropy loss function, and accuracy metric.
 - After training on the training dataset, the model achieved a training loss of 0.2440 and a training accuracy of 0.9068.
 - The model was evaluated on the validation dataset, and it achieved a loss of 0.3691 and an accuracy of 0.843.    
-    
+
+#### 🩺 [cat_and_dogs](./cat_and_dogs.ipynb) -  convolutional neural network for image classification
+
+This is a Convolutional Neural Network (CNN) project that classifies images of cats and dogs. The CNN model is built using the Keras library in Python. The project involves loading and preprocessing the images, including scaling and augmenting the training data. The model architecture consists of multiple convolutional layers with max pooling and batch normalization, followed by fully connected layers. The model is compiled with the binary cross-entropy loss function and the RMSprop optimizer. The performance of the model is evaluated using accuracy as the metric. 
+
 <a href="#top" style="position:fixed;bottom:20px;right:20px;color: green;">Go to top</a>
     
 Feel free to explore the code and learn more about these projects. If you have any questions or suggestions, please feel free to reach out to me.
